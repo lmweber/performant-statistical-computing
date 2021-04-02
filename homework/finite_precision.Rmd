@@ -188,12 +188,25 @@ compute_internet_ad_ploglik <- function(reg_coef) {
 }
 
 
+# gives error
 optim_result <- optim(
   # Fill in
+  par = rep(1, n_pred), 
+  fn = compute_internet_ad_ploglik, 
   method = 'Nelder-Mead', # gradient-free algorithm
   control = list(fnscale = -1) # Maximize the function
 )
 
+# runs without error
+optim_result <- optim(
+  # Fill in
+  par = rep(0, n_pred), 
+  fn = compute_internet_ad_ploglik, 
+  method = 'Nelder-Mead', # gradient-free algorithm
+  control = list(fnscale = -1) # Maximize the function
+)
+
+optim_result$convergence
 ```
 
 Oops, that didn't work --- figure out what went wrong. 
