@@ -28,6 +28,7 @@ Figure out what the function `determine_precision` is trying to do and fill out 
 
 are_numerically_distinguishable <- function(value1, value2) {
   # Fill in
+  value2 > value1
 }
 
 determine_precision <- function(init_upper_bound = 1) {
