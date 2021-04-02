@@ -72,7 +72,20 @@ n_unique_double <- 2^53 # Number of unique machine-representable values in [0, 1
 n_draw <- 10^6
 
 # Fill in
+est_num_expected_duplicate(n_draw, n_unique_double)
 
+# 10^8 draws: ~1 collision
+est_num_expected_duplicate(10^8, n_unique_double)
+# 10^9 draws: ~100 collisions
+est_num_expected_duplicate(10^9, n_unique_double)
+
+# try for 10^8 draws
+set.seed(123)
+vals1 <- runif(10^8, 0, 1)
+vals2 <- runif(10^8, 0, 1)
+sum(vals1 %in% vals2)
+# gives ~2.3 million collisions
+# possible explanation: values are stored with less than the maximum possible precision
 ```
 
 
