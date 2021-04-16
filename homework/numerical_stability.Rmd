@@ -112,10 +112,10 @@ Sigma_cross <- sq_exp_cov(dist_cross, corr_range)
 # predict new observations
 mean_new <- rep(0, n_new)
 mean_obs <- rep(0, n_obs)
-y_pred <- mean_new + Sigma_cross %*% Sigma_obs_inv %*% matrix(y_obs - mean_obs, ncol = 1)
+y_new <- mean_new + Sigma_cross %*% Sigma_obs_inv %*% matrix(y_obs - mean_obs, ncol = 1)
 
-y_pred <- as.vector(y_pred)
-y_pred
+y_new <- as.vector(y_new)
+y_new
 ```
 
 ```{r, fig.dim=c(8, 5), fig.align='center'}
@@ -131,7 +131,7 @@ plot(
 )
 points(
   # Fill in
-  x = loc_new, y = y_pred, 
+  x = loc_new, y = y_new, 
   col = jhu_color$spiritBlue
 )
 ```
