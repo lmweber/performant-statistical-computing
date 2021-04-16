@@ -142,6 +142,29 @@ $$\textrm{Var}(\boldsymbol{y}_1 \, | \, \boldsymbol{y}_2)
   = \boldsymbol{\Sigma}_{11} - \boldsymbol{\Sigma}_{12} \boldsymbol{\Sigma}_{22}^{-1} \boldsymbol{\Sigma}_{21},$$
 calculate 95% CI intervals of the interpolation, and plot them.
 
+```{r}
+var_new <- Sigma_new - Sigma_cross %*% Sigma_obs_inv %*% t(Sigma_cross)
+
+# calculate confidence intervals for predicted values
+ci_lower <- y_new - 1.96 * sqrt(diag(var_new))
+ci_upper <- y_new + 1.96 * sqrt(diag(var_new))
+
+# plot confidence intervals
+library(ggplot2)
+df <- data.frame(
+  x = c(loc_obs, loc_new), 
+  y = c(y_obs, y_new), 
+  predicted = c(rep(FALSE, n_obs), rep(TRUE, n_new)), 
+  lower = c(rep(NA, n_obs), ci_lower), 
+  upper = c(rep(NA, n_obs), ci_upper)
+)
+ggplot(df, aes(x = x, y = y, color = predicted)) + 
+  geom_point() + 
+  scale_color_manual(values = c("navy", "deepskyblue")) + 
+  geom_linerange(aes(ymin = lower, ymax = upper), color = "black", lwd = 0.4) + 
+  theme_bw()
+```
+
 ## Part 3: Kriging based on an alternative GP covariance function
 
 Albeit popular in certain fields, GP based on squared exponential covariance function is often considered "too smooth" for many applications.
