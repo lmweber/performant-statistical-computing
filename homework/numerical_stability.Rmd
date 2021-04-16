@@ -175,6 +175,14 @@ First find the definition and implementation of a Matern covariance using a comm
 
 ```{r}
 # Definition of the `matern_cov` function.
+
+# Matern covariance with smoothness $\nu = 5/2$
+matern_cov <- function(dist, range) { 
+  scaled_dist <- dist / range
+  return(
+    (1 + sqrt(5) * scaled_dist + 5 / 3 * scaled_dist^2) * exp(- sqrt(5) * scaled_dist)
+  )
+}
 ```
 
 Then use the eigen decomposition technique as before for interpolation and uncertainty quantification.
