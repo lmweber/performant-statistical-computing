@@ -1,6 +1,8 @@
 ---
 title: 'Homework: iterative method'
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include = FALSE}
@@ -38,17 +40,42 @@ auto_corr <- .9 # Corresponds to `\phi` above
 ar_precision_matvec <- function(v, auto_corr) {
   # Fill in: note that you can vectorize the calculation and do *not* need a for-loop. 
   # (Hint: how would you efficiently carry out a matrix-vector operation if the matrix has non-zero entries only along the sub or super diagonal?)
+  
+  # get length of vector
+  n <- length(v)
+  # calculate first element manually
+  elem_1 <- v[1] - auto_corr * v[2]
+  # calculate last element manually
+  elem_n <- v[n] - auto_corr * v[n - 1]
+  # calculate middle elements (vectorized)
+  elem_backone <- -1 * auto_corr * v[1:(n-2)]
+  elem_middle <- (1 + auto_corr^2) * v[2:(n-1)]
+  elem_forwardone <- -1 * auto_corr * v[3:n]
+  # add vectors
+  elems <- elem_backone + elem_middle + elem_forwardone
+  
+  # return full vector (including first and last element)
+  return(c(elem_1, elems, elem_n))
 }
 
 ar_eig <- eigs_sym(
   ar_precision_matvec, args = auto_corr,
   # Fill in
+  n = ar_length, 
+  k = 10, 
+  # note: smallest eigenvalues since using precision matrix
+  which = "SM", 
   opts = list(
     ncv = 100, # Spectrum distribution of AR-1 process is not very spread out on the extreme ends and is actually a hard case for Lanczos. So it helps to have more Lanczos vectors than the default for faster convergence.
     maxitr = 10^3, # Cap it just in case
     retvec = TRUE # More efficient to do without eigenvectors when not needed
   ),
 )
+
+# output
+str(ar_eig)
+ar_eig$values
+head(ar_eig$vectors)
 ```
 
 Now, directly compute the eigen decomposition of $\boldsymbol{\Sigma}$ (not $\boldsymbol{\Sigma}^{-1}$) and compare its output with the principal components and associated variances found via Lancsoz algorithm.
