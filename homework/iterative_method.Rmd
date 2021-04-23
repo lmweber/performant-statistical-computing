@@ -54,8 +54,11 @@ ar_precision_matvec <- function(v, auto_corr) {
   # add vectors
   elems <- elem_backone + elem_middle + elem_forwardone
   
-  # return full vector (including first and last element)
-  return(c(elem_1, elems, elem_n))
+  # combine into full vector (including first and last element)
+  elems_all <- c(elem_1, elems, elem_n)
+  
+  # divide by constant
+  elems / (1 - auto_corr^2)
 }
 
 ar_eig <- eigs_sym(
