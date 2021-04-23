@@ -82,6 +82,16 @@ Now, directly compute the eigen decomposition of $\boldsymbol{\Sigma}$ (not $\bo
 
 ```{r}
 # Fill in
+
+# first calculate the covariance matrix
+# which has entries Sigma_ij = phi ^ (t_j - t_i)
+exponents <- as.matrix(dist(1:ar_length))
+Sigma <- auto_corr^exponents
+# check
+Sigma[1:10, 1:10]
+
+# eigen decomposition
+eig <- eigen(Sigma)
 ```
 
 **Remark:** 
