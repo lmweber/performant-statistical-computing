@@ -58,7 +58,7 @@ ar_precision_matvec <- function(v, auto_corr) {
   elems_all <- c(elem_1, elems, elem_n)
   
   # divide by constant
-  elems / (1 - auto_corr^2)
+  elems_all / (1 - auto_corr^2)
 }
 
 ar_eig <- eigs_sym(
