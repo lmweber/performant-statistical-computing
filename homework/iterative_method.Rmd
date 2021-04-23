@@ -92,6 +92,14 @@ Sigma[1:10, 1:10]
 
 # eigen decomposition
 eig <- eigen(Sigma)
+
+# output
+str(eig)
+
+# compare eigenvalues
+eig$values[1:10]
+# compare with previous (note inverse)
+1/ar_eig$values
 ```
 
 **Remark:** 
