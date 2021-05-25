@@ -60,6 +60,17 @@ ar_precision_matvec_R <- function(v, auto_corr) {
 
 ```{r}
 # Check the output of your Rcpp function `ar_precision_matvec`
+
+# Rcpp version
+v <- rnorm(20)
+
+ar_precision_matvec(v, auto_corr)
+ar_precision_matvec_R(v, auto_corr)
+
+# check difference within reasonable precision
+ar_precision_matvec(v, auto_corr) - ar_precision_matvec_R(v, auto_corr)
+
+all(ar_precision_matvec(v, auto_corr) - ar_precision_matvec_R(v, auto_corr) < 1e-8)
 ```
 
 Benchmark performance of the R and Rcpp implementations of `ar_precision_matvec`.
@@ -67,7 +78,15 @@ Then use the Rcpp implementation to find the top 10 principal components of $\bo
 How much faster is it compared to explicit eigen decomposition of $\boldsymbol{\Sigma}$?
 
 ```{r}
-# Comare performences of the R and Rcpp implementation
+# Compare performences of the R and Rcpp implementation
+v <- rnorm(ar_length)
+length(v)
+
+library(bench)
+
+# Rcpp version is faster
+bench::mark(ar_precision_matvec(v, auto_corr))
+bench::mark(ar_precision_matvec_R(v, auto_corr))
 ```
 
 ```{r, eval=FALSE}
