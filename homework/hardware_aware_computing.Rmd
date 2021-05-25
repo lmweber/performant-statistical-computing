@@ -203,4 +203,13 @@ sourceCpp(file.path('src', 'matmat_eigen.cpp'))
 
 ```{r}
 # Check and benchmark
+
+# check
+out_eigen <- matmat_via_eigen(A, B)
+out_eigen[1:6, 1:6]
+
+sum(abs(out_eigen - out_matR))
+
+# benchmark
+bench::mark(matmat_via_eigen(A, B))
 ```
