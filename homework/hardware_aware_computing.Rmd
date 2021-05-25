@@ -138,6 +138,16 @@ B <- matrix(rnorm(n_inner * n_col), nrow = n_inner, ncol = n_col)
 
 ```{r}
 # Check the output of `row_col_dot_matmat`
+out_matmat <- row_col_dot_matmat(A, B)
+dim(out_matmat)
+out_matmat[1:6, 1:6]
+
+# compare
+out_matR <- A %*% B
+dim(out_matR)
+out_matR[1:6, 1:6]
+
+all(out_matmat == out_matR)
 ```
 
 ## Part II: Going one step beyond your linear algebra class
@@ -150,6 +160,17 @@ Which one is faster and why?
 
 ```{r}
 # Check and benchmark
+
+# check
+out_matmat_col <- col_oriented_matmat(A, B)
+dim(out_matmat_col)
+out_matmat_col[1:6, 1:6]
+
+sum(abs(out_matmat_col - out_matR))
+
+# benchmark
+bench::mark(row_col_dot_matmat(A, B))
+bench::mark(col_oriented_matmat(A, B))
 ```
 
 Also compare with performance of the matrix-matrix multiplication via `%*%` in R, which uses whatever the BLAS library your R was configured with.
@@ -157,6 +178,7 @@ Also compare with performance of the matrix-matrix multiplication via `%*%` in R
 
 ```{r}
 # Fill in
+bench::mark(A %*% B)
 ```
 
 When benchmarking alternative implementations (or alternative algorithms, more generally), keep in mind that the relative performance depends significantly on the size of a test problem.
